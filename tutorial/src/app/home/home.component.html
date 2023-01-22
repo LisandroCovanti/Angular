@@ -1,0 +1,50 @@
+<h1 id="title"> My Workspace</h1>
+<p #about>home works!</p>
+<div *ngIf="show">
+    <h3>variabile Home Component --> {{username}}</h3>
+    <h3>variabile ricevuta da componente padre:</h3>
+    {{user}}
+</div>
+
+<button id="button" (click)="showHidden()">Mostra/Nascondi</button>
+
+<div>
+
+    <select (change)="hello(selectField)" #selectField> <!-- #: definizione 'id' lato typescript "selectField"-->
+        <option value="1"> Saluta con alert </option>
+        <option value="2"> Saluta con console </option>
+    </select>
+    
+</div>
+
+<div>
+        <p [style.color]="color"
+        [ngClass]="{'big' : sizeText == 'big' , 'small' : sizeText == 'small'}" > <!-- {'valore1' : condizioneDaVerificarsi , 'valore2' : condizioneDaVerificarsi ,...} -->
+        CHANGE THIS TEXT WITH MENU BELOW
+    </p>
+    <select (change)="changeCss(selectFieldCss)" #selectFieldCss>
+        <option value="0"> RESET </option>
+        <option value="1"> Rosso </option>
+        <option value="2"> Verde </option>
+        <option value="3"> Blu </option>
+    </select>
+
+    <select (change)="changeTextCss(selectTextCss)" #selectTextCss>
+        <option value="0"> RESET </option>
+        <option value="1"> Big </option>
+        <option value="2"> Small </option>
+    </select>
+    <h4> DropList in una Non-Reactive Form</h4>
+
+     <!-- app.module.ts -->
+     <!-- aggiunge i moduli FormsModule e ReactiveFormsModule tra gli imports -->
+    <select (change)="nrForm()" [formControl]="selectField">
+        <option value="0"> RESET </option>
+        <option value="1"> Big </option>
+        <option value="2"> Small </option>
+    </select>
+</div>
+
+
+
+
