@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -17,10 +17,13 @@ export class HomeComponent implements OnInit,AfterViewInit{
   today: Date;
   money: number;
   show: boolean = false;
-  
+
   @ViewChild('about', {static : false}) aboutElement : ElementRef; //nome cercato tra html: 'about' ; nome attributo: aboutElement; tipo attributo: ElementRef
 
-  constructor() {
+  form: FormGroup;
+
+  constructor(public fb: FormBuilder) //parametro fb creato in corrispondenza di FormGroups
+   {
     this.today = new Date();
 
     let money1 = 23;
@@ -28,6 +31,14 @@ export class HomeComponent implements OnInit,AfterViewInit{
 
     this.money = this.sum(money1,money2);
 
+    //elenco dei validatori di default -- notare che sono dentro al costruttore
+    this.form = fb.group(
+      {
+        "user":   ['default',Validators.required],
+        "email":  ['',Validators.required],
+        "date":   ['',Validators.required]
+      }
+    )
     console.log("costruttore");
   }
 
@@ -92,8 +103,9 @@ export class HomeComponent implements OnInit,AfterViewInit{
     }
   }
   
-  //non-reactive Forms
-  selectField: FormControl = new FormControl("---");
+  //non-reactive Forms - (formControl --> associazione per singolo campo)
+  selectField: FormControl = new FormControl("2"); //valore di default
+
   nrForm() {
     if(this.selectField.value == "0"){
       this.sizeText = null;
@@ -104,5 +116,31 @@ export class HomeComponent implements OnInit,AfterViewInit{
     else if(this.selectField.value == "2"){
       this.sizeText = "small";
     }
+  }
+
+  send(): void {
+    if(!this.form.valid) //ritorna booleano
+    {
+      alert("compilare tutti i campi obbligatori");
+      return;
+    }
+    else{
+      console.log(
+        this.form.controls['user'].value,
+        this.form.controls['email'].value,
+        this.form.controls['date'].value
+      );
+    }
+  }
+
+  checkUser(): void {
+      let user = this.form.controls['user'].value
+      if(user.length < 8){
+        console.log("username minimo 8 caratteri");
+        this.form.controls['user'].setErrors({ incorrect: true});
+      }
+      else{
+        this.form.controls['user'].setErrors(null);
+      }
   }
 }

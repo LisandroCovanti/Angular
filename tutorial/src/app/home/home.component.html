@@ -10,7 +10,7 @@
 
 <div>
 
-    <select (change)="hello(selectField)" #selectField> <!-- #: definizione 'id' lato typescript "selectField"-->
+    <select (change)="hello(selectMessageField)" #selectMessageField> <!-- #: definizione 'id' lato typescript "selectField"-->
         <option value="1"> Saluta con alert </option>
         <option value="2"> Saluta con console </option>
     </select>
@@ -43,6 +43,19 @@
         <option value="1"> Big </option>
         <option value="2"> Small </option>
     </select>
+</div>
+
+<div>
+    <h1> Esempio di Reactive Form </h1>
+    <!-- form -->
+    <div class="formContainer">
+        <form (ngSubmit)="send()" [formGroup]="form"> <!-- "form" equivale al nome dell'attributo typescript che rappresenta la FormGroup-->
+            <input class="form-control" type="text" (input)="checkUser()" placeholder="Username" formControlName="user">
+            <input class="form-control" type="email" placeholder="E-mail" formControlName="email">
+            <input class="form-control" type="date" placeholder="data di nascita" formControlName="date">
+            <input type="submit" value="INVIA">
+        </form>
+    </div>
 </div>
 
 
