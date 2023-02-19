@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -22,8 +24,10 @@ export class HomeComponent implements OnInit,AfterViewInit{
 
   form: FormGroup;
 
-  constructor(public fb: FormBuilder) //parametro fb creato in corrispondenza di FormGroups
-   {
+  loading: boolean = true;
+  constructor(public fb: FormBuilder, //parametro fb creato in corrispondenza di FormGroups
+              public http: HttpClient)  
+  {
     this.today = new Date();
 
     let money1 = 23;
@@ -43,7 +47,26 @@ export class HomeComponent implements OnInit,AfterViewInit{
   }
 
   ngOnInit(): void{
-    console.log("Init")
+    console.log("Init");
+
+    this.requestHttp().subscribe(this.callback);
+
+  }
+
+  requestHttp(): Observable<Object> {
+    return this.http.get("https://www.reqbin.com/echo");
+  }
+
+  callback = (resultRequest: any) => {
+    console.log(resultRequest);
+    this.loading = false;
+  }
+
+  requestSimplifiedHttp() { //non ritorna più Observable<Object>
+    this.http.get("https://youtube)").subscribe( result  => {
+      console.log(result);
+      this.loading = false;
+    });
   }
 
   sum(n1: number, n2: number): number {
